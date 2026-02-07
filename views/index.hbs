@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome · Arjun Krishna</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <style>
+    :root {
+      --rp-red: #c51a4a;
+      --rp-red-bright: #e30b5c;
+      --rp-red-dark: #9a1439;
+      --rp-red-glow: rgba(197, 26, 74, 0.45);
+      --rp-red-subtle: rgba(197, 26, 74, 0.12);
+      --bg: #0a0a0c;
+      --bg-elevated: rgba(18, 18, 22, 0.9);
+      --border: rgba(197, 26, 74, 0.3);
+      --text: #f5f3f6;
+      --text-muted: #7a7580;
+      --green: #138636;
+      --space-x: clamp(0.9rem, 4vw, 1.5rem);
+      --space-y: clamp(1.5rem, 6vw, 3rem);
+      --gap: clamp(0.6rem, 2.5vw, 1rem);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      min-height: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body {
+      background-image:
+        radial-gradient(ellipse 100% 60% at 50% -30%, var(--rp-red-subtle), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 80% 110%, rgba(197, 26, 74, 0.06), transparent 50%),
+        linear-gradient(180deg, var(--bg) 0%, #0e0e12 100%);
+    }
+
+    #app {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: var(--space-y) var(--space-x);
+      gap: var(--gap);
+      overflow: auto;
+      width: 100%;
+    }
+
+    .welcome-card {
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 640px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+      padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(0.75rem, 3vw, 1.25rem);
+    }
+
+    .welcome-card-top {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.2rem;
+    }
+
+    .welcome-heading {
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .welcome-sub {
+      font-size: clamp(0.8rem, 2vw, 0.95rem);
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 0.2rem;
+    }
+
+    .welcome-card-divider {
+      height: 1px;
+      background: var(--border);
+      opacity: 0.6;
+      margin: 0;
+    }
+
+    .welcome-card-about .about-title {
+      font-size: clamp(0.6rem, 1.4vw, 0.7rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--rp-red-bright);
+      margin-bottom: 0.35rem;
+    }
+
+    .welcome-card-about .about-text {
+      font-size: clamp(0.7rem, 1.7vw, 0.8rem);
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .welcome-card-about .about-text strong { color: var(--text); }
+
+    .welcome-card-about .about-text code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9em;
+      padding: 0.1em 0.35em;
+      background: rgba(197, 26, 74, 0.15);
+      border-radius: 4px;
+      color: var(--rp-red-bright);
+    }
+
+    .main {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap);
+      width: 100%;
+      max-width: 640px;
+      padding: 0.5rem;
+      overflow: hidden;
+    }
+
+    @media (min-width: 900px) {
+      .welcome-card,
+      .main,
+      .visitors-section { max-width: min(96vw, 920px); }
+      .stats-row { max-width: min(96vw, 720px); }
+    }
+
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(0.75rem, 2.5vw, 1.25rem);
+      width: 100%;
+      max-width: 480px;
+      flex-shrink: 0;
+    }
+
+    .stat-block {
+      text-align: center;
+      padding: clamp(0.6rem, 2vw, 0.9rem) clamp(1rem, 3vw, 1.35rem);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      min-width: clamp(100px, 28vw, 140px);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+
+    .stat-block:hover {
+      border-color: var(--rp-red-bright);
+      box-shadow: 0 8px 32px rgba(197, 26, 74, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .stat-label {
+      font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(3rem, 14vw, 5.5rem);
+      font-weight: 600;
+      color: var(--rp-red-bright);
+      line-height: 1.1;
+      text-shadow: 0 0 32px var(--rp-red-glow);
+    }
+
+    .stat-value.muted {
+      color: var(--text-muted);
+      text-shadow: none;
+    }
+
+    .visitors-section {
+      width: 100%;
+      max-width: 640px;
+      height: min(55vh, 325px);
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: clamp(0.5rem, 2vw, 0.75rem);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    }
+
+    .visitors-title {
+      font-size: clamp(0.65rem, 1.6vw, 0.75rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .visitor-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .visitor-list::-webkit-scrollbar { width: 6px; }
+    .visitor-list::-webkit-scrollbar-track { background: transparent; }
+    .visitor-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    .visitor-row {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto auto auto;
+      grid-template-rows: auto auto auto;
+      gap: 0.15rem 0.5rem;
+      align-items: center;
+      font-size: clamp(0.65rem, 1.6vw, 0.8rem);
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      background: rgba(197, 26, 74, 0.06);
+      border: 1px solid transparent;
+      flex-shrink: 0;
+    }
+
+    .visitor-row:hover {
+      background: rgba(197, 26, 74, 0.1);
+      border-color: rgba(197, 26, 74, 0.2);
+    }
+
+    .visitor-row--message { grid-template-columns: 1fr; }
+
+    .visitor-time {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+      font-size: 0.8em;
+      white-space: nowrap;
+    }
+
+    .visitor-ip {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--rp-red-bright);
+      font-size: 0.85em;
+    }
+
+    .visitor-device {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .visitor-meta {
+      color: var(--text-muted);
+      font-size: 0.85em;
+    }
+
+    .visitor-visits {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8em;
+      color: var(--text-muted);
+      background: rgba(197, 26, 74, 0.15);
+      padding: 0.15rem 0.4rem;
+      border-radius: 6px;
+    }
+
+    .visitor-ref {
+      color: var(--text-muted);
+      font-size: 0.8em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      grid-column: 1 / -1;
+    }
+
+    .visitor-ua {
+      font-size: 0.75em;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      grid-column: 1 / -1;
+      cursor: help;
+    }
+
+    .visitor-ref:empty::before, .visitor-meta.empty::before { content: '—'; color: var(--text-muted); }
+
+    .visitor-header {
+      background: rgba(197, 26, 74, 0.12);
+      font-weight: 600;
+      color: var(--text-muted);
+      font-size: 0.7em;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .visitor-header .visitor-ip,
+    .visitor-header .visitor-device {
+      color: var(--text-muted);
+    }
+
+    .show-more-wrap {
+      flex-shrink: 0;
+      padding: 0.5rem 0;
+      text-align: center;
+    }
+
+    .show-more-btn {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+      font-weight: 600;
+      color: var(--rp-red-bright);
+      background: rgba(197, 26, 74, 0.15);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.4rem 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .show-more-btn:hover {
+      background: rgba(197, 26, 74, 0.25);
+      border-color: var(--rp-red-bright);
+    }
+
+    .show-more-btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: clamp(0.7rem, 1.8vw, 0.8rem);
+      color: var(--text-muted);
+      flex-shrink: 0;
+      padding-top: 0.25rem;
+    }
+
+    .dot {
+      width: clamp(6px, 1.5vw, 8px);
+      height: clamp(6px, 1.5vw, 8px);
+      background: var(--green);
+      border-radius: 50%;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    .dot.offline {
+      background: var(--rp-red);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.45; }
+    }
+
+    .host-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.65rem, 1.5vw, 0.7rem);
+      padding: 0.25rem 0.5rem;
+      background: rgba(197, 26, 74, 0.2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--rp-red-bright);
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <section class="welcome-card" aria-labelledby="welcome-heading">
+      <header class="welcome-card-top">
+        <h1 id="welcome-heading" class="welcome-heading">Hey there</h1>
+        <p class="welcome-sub">Good to see you — have a look around.</p>
+      </header>
+      <hr class="welcome-card-divider" aria-hidden="true">
+      <div class="welcome-card-about">
+        <p class="about-title">What is this?</p>
+        <p class="about-text">
+          I'm <strong>Arjun Krishna</strong>, a software engineer. This is my own little corner of the web—a <strong>visit logger</strong> I built and <strong>self-host locally</strong> on a <strong>Raspberry Pi cluster</strong> so I can see who drops by and learn from running the full stack. When you open this page, the server records a hit; the numbers above are totals and recent visitors. All data stays here, no third-party analytics.
+        </p>
+      </div>
+    </section>
+
+    <main class="main">
+      <div class="stats-row" aria-label="Statistics">
+        <div class="stat-block">
+          <span class="stat-label">Total views</span>
+          <div class="stat-value" :class="{ muted: !online }">\{{ totalViews }}</div>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Unique visitors</span>
+          <div class="stat-value" :class="{ muted: !online }">\{{ uniqueVisitors }}</div>
+        </div>
+      </div>
+
+      <section class="visitors-section" aria-labelledby="recent-activity-heading">
+        <h2 id="recent-activity-heading" class="visitors-title">Recent activity</h2>
+        <div class="visitor-list" role="list">
+          <template v-if="online && displayedVisits.length > 0">
+            <div class="visitor-row visitor-header" role="listitem">
+              <span class="visitor-time">Time</span>
+              <span class="visitor-ip">IP</span>
+              <span class="visitor-device">Device</span>
+              <span class="visitor-meta">Screen</span>
+              <span class="visitor-meta">Lang</span>
+              <span class="visitor-visits">Views</span>
+              <span class="visitor-ref">Referrer</span>
+              <span class="visitor-ua">User-Agent</span>
+            </div>
+            <div
+              v-for="(v, i) in displayedVisits"
+              :key="(page - 1) * 5 + i"
+              class="visitor-row"
+              role="listitem"
+            >
+              <span class="visitor-time">\{{ formatTime(v.time) }}</span>
+              <span class="visitor-ip">\{{ v.ip }}</span>
+              <span class="visitor-device">\{{ v.device }}</span>
+              <span class="visitor-meta" :class="{ empty: !v.screen }">\{{ v.screen || '—' }}</span>
+              <span class="visitor-meta" :class="{ empty: !v.language }">\{{ v.language || '—' }}</span>
+              <span class="visitor-visits" title="Visit count for this IP">\{{ v.visitCount }} \{{ v.visitCount === 1 ? 'view' : 'views' }}</span>
+              <span class="visitor-ref" :title="v.referrer">\{{ v.referrer || '—' }}</span>
+              <span class="visitor-ua" :title="v.userAgent || ''">\{{ (v.userAgent || '').slice(0, 60) }}\{{ (v.userAgent && v.userAgent.length > 60) ? '…' : '' }}</span>
+            </div>
+          </template>
+          <div v-else-if="!online && !displayedVisits.length" class="visitor-row visitor-row--message" role="listitem">
+            <span class="visitor-device">Connecting to server…</span>
+          </div>
+          <div v-else-if="!displayedVisits.length" class="visitor-row visitor-row--message" role="listitem">
+            <span class="visitor-ref">No visits yet.</span>
+          </div>
+          <div v-if="online && hasMore" class="show-more-wrap">
+            <button type="button" class="show-more-btn" :disabled="loadingMore" @click="loadMore">Show more</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span class="dot" :class="{ offline: !online }" aria-hidden="true"></span>
+      <span>\{{ online ? 'Live' : 'Offline' }}</span>
+      <span class="host-badge">{{ hostname }}</span>
+    </footer>
+  </div>
+
+  <script>
+    const LIMIT = 5;
+    const { createApp } = Vue;
+
+    createApp({
+      data: () => ({
+        totalViews: '—',
+        uniqueVisitors: '—',
+        displayedVisits: [],
+        page: 1,
+        hasMore: false,
+        loadingMore: false,
+        online: false,
+        hostname: '{{ hostname }}'
+      }),
+      mounted() {
+        this.registerVisit();
+        this.fetchStats();
+      },
+      methods: {
+        async registerVisit() {
+          try {
+            await fetch('/api/visit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                referrer: document.referrer || '',
+                screenWidth: window.screen?.width,
+                screenHeight: window.screen?.height,
+                language: navigator.language || navigator.languages?.[0]
+              })
+            });
+          } catch (_) {}
+        },
+        async fetchStats() {
+          try {
+            const r = await fetch(`/api/stats?page=1&limit=${LIMIT}`);
+            const d = await r.json();
+            if (!r.ok || !Array.isArray(d.recentVisits)) throw new Error();
+            this.totalViews = d.totalViews ?? 0;
+            this.uniqueVisitors = d.uniqueVisitors ?? 0;
+            this.displayedVisits = d.recentVisits;
+            this.page = 1;
+            this.hasMore = !!d.hasMore;
+            this.online = true;
+          } catch (_) {
+            this.online = false;
+          }
+        },
+        async loadMore() {
+          if (this.loadingMore || !this.hasMore) return;
+          this.loadingMore = true;
+          try {
+            const nextPage = this.page + 1;
+            const r = await fetch(`/api/stats?page=${nextPage}&limit=${LIMIT}`);
+            const d = await r.json();
+            const next = r.ok && Array.isArray(d.recentVisits) ? d.recentVisits : [];
+            this.displayedVisits = this.displayedVisits.concat(next);
+            this.page = nextPage;
+            this.hasMore = !!d.hasMore;
+            if (next.length) {
+              this.totalViews = d.totalViews ?? this.totalViews;
+              this.uniqueVisitors = d.uniqueVisitors ?? this.uniqueVisitors;
+            }
+          } catch (_) {}
+          this.loadingMore = false;
+        },
+        formatTime(iso) {
+          if (!iso) return '—';
+          const d = new Date(iso);
+          const opts = { hour12: false };
+          return d.toDateString() === new Date().toDateString()
+            ? d.toLocaleTimeString('en-GB', { ...opts, hour: '2-digit', minute: '2-digit', second: '2-digit' })
+            : d.toLocaleString('en-GB', { ...opts, dateStyle: 'short', timeStyle: 'short' });
+        }
+      }
+    }).mount('#app');
+  </script>
+</body>
+</html>

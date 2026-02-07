@@ -1,0 +1,13 @@
+{
+  "name": "raspberry-pi-dashboard",
+  "version": "1.0.0",
+  "description": "Raspberry Pi live stats dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0",
+    "hbs": "^4.2.0"
+  }
+}
