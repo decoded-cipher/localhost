@@ -410,11 +410,11 @@
       <div class="stats-row" aria-label="Statistics">
         <div class="stat-block">
           <span class="stat-label">Total views</span>
-          <div class="stat-value" :class="{ muted: !online }">\{{ totalViews }}</div>
+          <div class="stat-value" :class="{ muted: !online }">{{ totalViews }}</div>
         </div>
         <div class="stat-block">
           <span class="stat-label">Unique visitors</span>
-          <div class="stat-value" :class="{ muted: !online }">\{{ uniqueVisitors }}</div>
+          <div class="stat-value" :class="{ muted: !online }">{{ uniqueVisitors }}</div>
         </div>
       </div>
 
@@ -438,14 +438,14 @@
               class="visitor-row"
               role="listitem"
             >
-              <span class="visitor-time">\{{ formatTime(v.time) }}</span>
-              <span class="visitor-ip">\{{ v.ip }}</span>
-              <span class="visitor-device">\{{ v.device }}</span>
-              <span class="visitor-meta" :class="{ empty: !v.screen }">\{{ v.screen || '—' }}</span>
-              <span class="visitor-meta" :class="{ empty: !v.language }">\{{ v.language || '—' }}</span>
-              <span class="visitor-visits" title="Visit count for this IP">\{{ v.visitCount }} \{{ v.visitCount === 1 ? 'view' : 'views' }}</span>
-              <span class="visitor-ref" :title="v.referrer">\{{ v.referrer || '—' }}</span>
-              <span class="visitor-ua" :title="v.userAgent || ''">\{{ (v.userAgent || '').slice(0, 60) }}\{{ (v.userAgent && v.userAgent.length > 60) ? '…' : '' }}</span>
+              <span class="visitor-time">{{ formatTime(v.time) }}</span>
+              <span class="visitor-ip">{{ v.ip }}</span>
+              <span class="visitor-device">{{ v.device }}</span>
+              <span class="visitor-meta" :class="{ empty: !v.screen }">{{ v.screen || '—' }}</span>
+              <span class="visitor-meta" :class="{ empty: !v.language }">{{ v.language || '—' }}</span>
+              <span class="visitor-visits" title="Visit count for this IP">{{ v.visitCount }} {{ v.visitCount === 1 ? 'view' : 'views' }}</span>
+              <span class="visitor-ref" :title="v.referrer">{{ v.referrer || '—' }}</span>
+              <span class="visitor-ua" :title="v.userAgent || ''">{{ (v.userAgent || '').slice(0, 60) }}{{ (v.userAgent && v.userAgent.length > 60) ? '…' : '' }}</span>
             </div>
           </template>
           <div v-else-if="!online && !displayedVisits.length" class="visitor-row visitor-row--message" role="listitem">
@@ -463,8 +463,8 @@
 
     <footer class="footer">
       <span class="dot" :class="{ offline: !online }" aria-hidden="true"></span>
-      <span>\{{ online ? 'Live' : 'Offline' }}</span>
-      <span class="host-badge">{{ hostname }}</span>
+      <span>{{ online ? 'Live' : 'Offline' }}</span>
+      <span class="host-badge">__HOSTNAME__</span>
     </footer>
   </div>
 
@@ -481,7 +481,7 @@
         hasMore: false,
         loadingMore: false,
         online: false,
-        hostname: '{{ hostname }}'
+        hostname: '__HOSTNAME__'
       }),
       mounted() {
         this.registerVisit();
