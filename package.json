@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "description": "Raspberry Pi live stats dashboard",
   "private": true,
-  "main": "server.js",
+  "main": "app/server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node app/server.js",
+    "dns-update": "node cf-dns.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.6.0",
+    "cloudflare": "^4.0.0",
+    "dotenv": "^16.0.0",
     "express": "^4.21.0"
   }
 }
